@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		class Melon {
+			constructor(){
+				this.x = WIDTH/2;
+				this.y = 0;
+				this.vel = 10;
+				this.jumped = false;
+
+			}
+
+			update(){
+				if(this.y > 1 && this.jumped == true && this.vel < 0){
+					this.jumped = false;
+				}
+
+				if(this.y > 0){
+					this.vel += -0.5;
+				}else{
+					this.vel += -this.y/100
+				}
+				this.y += this.vel;
+				this.vel *= 0.999;
+			}
+
+			applyJump(){
+				if(this.y <= 0 && this.jumped == false){
+					this.vel += 2*(1-1*Math.pow(Math.E,this.y*0.5));
+					console.log("JUMPED");
+				}
+
+				this.jumped = true;
+			}
+
+			draw(){
+				ctx.beginPath();
+				ctx.fillStyle = "#FFFF00";
+				ctx.arc(this.x, groundHeight, 20, 0, 2 * Math.PI);
+				ctx.stroke();
+			}
+
+			getY(){
+				return this.y;
+			}
+
+
+		}
+
+		class cloud {
+			constructor(startX,startY){
+				
+				var img = document.getElementById("scream");
+  				ctx.drawImage(img, 10, 10);
+			}
+		}
+
+		function mainLoop(){
+			camY = melon.getY();
+
+		    ctx.fillStyle = "#FFFFFF";
+
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+			
+			ctx.fillStyle = "#000000";
+			if(melon.getY()-10 <= 0){
+				ctx.beginPath();
+				ctx.moveTo(0, groundHeight+camY);
+				ctx.lineTo(WIDTH/2-20, groundHeight);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.lineTo(WIDTH/2+20, groundHeight);
+				ctx.lineTo(WIDTH, groundHeight+camY);
+				ctx.stroke();
+			}else{
+				ctx.beginPath();
+				ctx.moveTo(0, groundHeight+camY);
+				ctx.lineTo(WIDTH, groundHeight+camY);
+				ctx.stroke();
+			}
+
+			//melon.applyJump();
+		    melon.update();
+
+			melon.draw();
+
+		    if(true){
+		        requestAnimationFrame(mainLoop);
+		    }
+		}
+
+		function keyDown(e) {
+			melon.applyJump();
+		}
+
+		var canvas;
+		var ctx;
+		const groundHeight = 300;
+		const WIDTH = 640;
+		const HEIGHT = 480;
+		var camY = 0;
+		var melon = new Melon();
+
+	</script> 
+</head>
+<body>
+
+	<canvas id="myCanvas"  width="640" height="480"></canvas>
+	<script type="text/javascript">
+		canvas = document.getElementById("myCanvas");
+		window.addEventListener( "keydown", this.keyDown, true);
+		ctx = canvas.getContext("2d");
+		
+		requestAnimationFrame(mainLoop);
+	</script>
+
+</body>
+</html>
