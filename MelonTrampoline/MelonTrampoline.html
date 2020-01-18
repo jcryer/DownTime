@@ -27,18 +27,22 @@
 
 			applyJump(){
 				if(this.y <= 0 && this.jumped == false){
-					this.vel += 2*(1-1*Math.pow(Math.E,this.y*0.5));
-					console.log("JUMPED");
+					this.vel += 5*(1-1*Math.pow(Math.E,this.y*0.5));
+					//console.log("JUMPED");
 				}
 
 				this.jumped = true;
 			}
 
 			draw(){
+				
 				ctx.beginPath();
 				ctx.fillStyle = "#FFFF00";
 				ctx.arc(this.x, groundHeight, 20, 0, 2 * Math.PI);
+				ctx.fill();
 				ctx.stroke();
+				
+				//ctx.drawImage(melonManImg, this.x-40, groundHeight-40, 80,80);
 			}
 
 			getY(){
@@ -48,29 +52,41 @@
 
 		}
 
-		class cloud {
+		class Cloud {
 			constructor(startX,startY){
 				this.x = startX;
 				this.y = startY;			
 			}
 
-			drawImage(){
-				ctx.drawImage(cloudImg, startX, startY);
+			draw(){
+				ctx.drawImage(cloudImg, this.x, -this.y+camY,200,200);
 			}
 
 			update(){
-				if(this.y+camY < -100){
-					this.y += 840;
-				}else if(this.y+camY > 840){
-					this.y -= 840;
-				}
 			}
+		}
+
+		function calcBlue(height){
+			var digits = "0123456789ABCDEF";
+			if(height < 0){
+				return "FF";
+			}
+			var dec = parseInt(255*height/1000);
+			if(dec > 255){
+				dec = 255;
+			}
+			var hexDig1 = 15-(parseInt(dec/16));
+			var hexDig2 = 15-(dec-16*parseInt(dec/16));
+
+			return (digits[hexDig1].toString() + digits[hexDig2].toString());
 		}
 
 		function mainLoop(){
 			camY = melon.getY();
 
-		    ctx.fillStyle = "#FFFFFF";
+
+
+		    ctx.fillStyle = "#0000"+calcBlue(melon.getY());
 
 			ctx.fillRect(0,0,WIDTH,HEIGHT);
 			
@@ -89,6 +105,11 @@
 				ctx.moveTo(0, groundHeight+camY);
 				ctx.lineTo(WIDTH, groundHeight+camY);
 				ctx.stroke();
+			}
+
+			for(var i = 0; i < clouds.length; i++){
+				clouds[i].draw()
+				clouds[i].update();
 			}
 
 			//melon.applyJump();
@@ -112,7 +133,15 @@
 		const HEIGHT = 480;
 		var camY = 0;
 
-		var cloudImg = document.getElementById("cloud");
+		var cloudImg = new Image();
+		var melonManImg = new Image();
+
+		melonManImg.src = "MelonBall.png";
+
+		cloudImg.src = "cloud.png";
+		var clouds = [];
+		clouds.push(new Cloud(100,300));
+		clouds.push(new Cloud(300,500));
 
 		var melon = new Melon();
 
@@ -128,6 +157,5 @@
 		
 		requestAnimationFrame(mainLoop);
 	</script>
-
 </body>
 </html>
