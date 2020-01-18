@@ -1,10 +1,9 @@
 class Virus {
    constructor(virusType) {
        this.virusType = virusType;
-       this.distance = 200;  
+       this.distance = 10;  
        this.beingAttacked = false;
    }
-    
     getType() {
         return this.virusType;
     }
@@ -23,11 +22,15 @@ class Virus {
     attack() {
         this.beingAttacked = true;
     }
+    draw() {
+        // Hmm
+    }
 }
 
 const VirusTypes = Object.freeze({"test":1, "test2":2, "test3":3});
 
 var loopVar;
+
 // Tracks the time until a new virus should be spawned
 var newVirus;
 
@@ -51,7 +54,6 @@ function gameLoop() {
     checkViruses();
     // Needs to do actual minigame shit
 }
-
 
 function loseTimeToVirus() {
     newVirus -= 1;
@@ -79,6 +81,7 @@ function checkViruses() {
                 destroyedVirus = incomingVirus;
             }
         }
+        incomingVirus.draw();
     });
     if (destroyedVirus != 0) {
         incomingViruses.pop(destroyedVirus);
@@ -112,8 +115,6 @@ function changeComputer(computerType) {
 function loseGame() {
     clearInterval(loopVar);
 }
-
-
 
 // Misc methods
 function getRandomInt(min, max) {
