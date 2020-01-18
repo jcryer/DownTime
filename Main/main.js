@@ -1,12 +1,11 @@
 $( document ).ready(function() {
     
+    // Pre-game
     $('#connected').hide();
     $('#notconnected').show();
     $("#game").hide();
     
-    var score = 0;
-    var levels = 0;
-    
+    /*
     window.onmessage = function(e){
         if (e.data == "done") {
             levels += 1;
@@ -17,11 +16,12 @@ $( document ).ready(function() {
             $("#score").text(score);
         }
     };
-    
+    */
     $("#playButton").click(function() {
         $("#landing").hide();
         $("#game").show();
-        $('#gameWindow').attr('src', "game1.html");
+        gameLoop();
+        //$('#gameWindow').attr('src', "game1.html");
     });
     
     setInterval(function(){ 
