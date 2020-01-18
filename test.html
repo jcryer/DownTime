@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		var canvas;
+		var ctx;
+		const WIDTH = 640;
+		const HEIGHT = 480;
+		var x = 200;
+		var y = 100;
+		var vely = 0;
+
+		function mainLoop(){
+		    ctx.fillStyle = "#FFFFFF";
+
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+		    ctx.fillStyle = "#FF0000";
+
+			ctx.fillRect(x, y, 10, 10);
+
+			if(y + vely < 0){
+				vely = -vely;
+			}
+
+			y += vely;
+		    vely -= 0.1;
+		    if(true){
+		        requestAnimationFrame(mainLoop);
+		    }
+		}
+	</script> 
+</head>
+<body>
+
+	<canvas id="myCanvas"  width="640" height="480"></canvas>
+	<script type="text/javascript">
+		canvas = document.getElementById("myCanvas");
+		ctx = canvas.getContext("2d");
+		requestAnimationFrame(mainLoop);
+	</script>
+
+</body>
+</html>
