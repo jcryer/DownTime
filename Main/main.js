@@ -20,10 +20,11 @@ $( document ).ready(function() {
     $("#playButton").click(function() {
         $("#landing").hide();
         $("#game").show();
-        gameLoop();
+        gameStart();
         //$('#gameWindow').attr('src', "game1.html");
     });
     
+    /*
     setInterval(function(){ 
         $.ajax({
             url: "http://www.google.com/",
@@ -39,5 +40,5 @@ $( document ).ready(function() {
                 $('#notconnected').hide();
             }
         });   
-    }, 1000);
+    }, 1000);*/
 });

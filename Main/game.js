@@ -16,6 +16,10 @@ class Virus {
         this.distance -= 1;
     }
     
+    isAttacked() {
+        return this.beingAttacked;
+    }
+    
     attack() {
         this.beingAttacked = true;
     }
@@ -32,7 +36,7 @@ var newVirusModifier = 1;
 
 var health;
 
-var incomingViruses = {};
+var incomingViruses = [];
 
 function gameStart() {
     newVirus = 0;
@@ -66,14 +70,19 @@ function spawnNewVirus() {
 
 // Deals with loseHealth
 function checkViruses() { 
+    var destroyedVirus = 0;
     incomingViruses.forEach(function (incomingVirus) {
-        if (!incomingVirus.beingAttacked()) {
+        if (!incomingVirus.isAttacked()) {
             incomingVirus.reduceDistance();
             if (incomingVirus.getDistance() <= 0) {
                 loseHealth();
+                destroyedVirus = incomingVirus;
             }
         }
     });
+    if (destroyedVirus != 0) {
+        incomingViruses.pop(destroyedVirus);
+    }
 }
 
 // Deals with changeHealthBar, changeComputer and loseGame
