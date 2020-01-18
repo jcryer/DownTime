@@ -2,12 +2,35 @@
 <html>
 <head>
 	<script>
+		class Draw {
+			constructor(){
+
+			}
+
+			drawLine(x1,y1,x2,y2){
+				ctx.beginPath();
+				ctx.moveTo(x1, -y1+groundHeight+camY);
+				ctx.lineTo(x2, -y2+groundHeight+camY);
+				ctx.stroke();
+			}
+
+			fillRect(x,y,width,height){
+				ctx.fillRect(x,groundHeight+camY-y,width,height);
+			}
+		}
+
 		class Melon {
 			constructor(){
 				this.x = WIDTH/2;
 				this.y = 0;
 				this.vel = 10;
 				this.jumped = false;
+
+				this.lastFire = 0;
+				this.direction = 0;
+				this.coolDown = 50;
+				this.fireTime = 50;
+				this.isFire = false;
 
 			}
 
@@ -21,8 +44,19 @@
 				}else{
 					this.vel += -this.y/100
 				}
+
+				if(tick-this.lastFire < this.fireTime){
+					this.isFire = true;
+				}else{
+					this.isFire = false;
+				}
+
+
 				this.y += this.vel;
 				this.vel *= 0.999;
+
+
+				
 			}
 
 			applyJump(){
@@ -44,6 +78,20 @@
 				*/
 
 				ctx.drawImage(melonManImg, this.x-40, groundHeight-40, 80,80);
+				if(this.isFire == true){
+					if(this.direction == 0){
+						d.drawLine(this.x,this.y,this.x-200,this.y);
+					}else{
+						d.drawLine(this.x,this.y,this.x+200,this.y);
+					}
+				}
+			}
+
+			fire(dir){
+				this.direction = dir;
+				if(tick-this.lastFire > this.fireTime+this.coolDown){
+					this.lastFire = tick;
+				}
 			}
 
 			getY(){
@@ -58,11 +106,17 @@
 				this.x = startX;
 				this.y = startY;	
 				this.sX = sizeX;
-				this.sY = sizeY;		
+				this.sY = sizeY;	
+				this.offX = offX;
+				this.offY = offY;	
+
+				this.alive = true;
 			}
 
-			draw(){
-				ctx.drawImage(cloudImg, this.x, -this.y+camY,this.sX,this.sY);
+			draw(imgFile){
+				if(this.alive == true){
+					ctx.drawImage(imgFile, this.x-this.offX, camY-this.y+groundHeight-this.offY ,this.sX,this.sY);
+				}
 			}
 
 			update(){
@@ -74,7 +128,7 @@
 			if(height < 0){
 				return "FF";
 			}
-			var dec = parseInt(255*height/1000);
+			var dec = parseInt(255*height/2000);
 			if(dec > 255){
 				dec = 255;
 			}
@@ -95,41 +149,34 @@
 
 			ctx.fillStyle = "#00FF00";
 
-			ctx.fillRect(0,camY+groundHeight+50,WIDTH,10000);
+			d.fillRect(0,-50,WIDTH,1000);
 			
 			ctx.fillStyle = "#DD8844";
 
-			ctx.fillRect(0,camY+groundHeight+80,WIDTH,10000);
+			d.fillRect(0,-80,WIDTH,1000);
 			
 			ctx.fillStyle = "#000000";
 			if(melon.getY()-10 <= 0){
-				ctx.beginPath();
-				ctx.moveTo(0, groundHeight+camY);
-				ctx.lineTo(WIDTH/2-20, groundHeight);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.lineTo(WIDTH/2+20, groundHeight);
-				ctx.lineTo(WIDTH, groundHeight+camY);
-				ctx.stroke();
+				d.drawLine(0,0,WIDTH/2-20,melon.getY());
+				d.drawLine(WIDTH/2+20, melon.getY(), WIDTH, 0);
 			}else{
-				ctx.beginPath();
-				ctx.moveTo(0, groundHeight+camY);
-				ctx.lineTo(WIDTH, groundHeight+camY);
-				ctx.stroke();
+				d.drawLine(0,0,WIDTH,0);
 			}
 
 			for(var i = 0; i < clouds.length; i++){
-				clouds[i].draw()
+				clouds[i].draw(cloudImg);
+				clouds[i].update();
 			}
 
 			for(var i = 0; i < trees.length; i++){
-				trees[i].draw();
+				trees[i].draw(treeImg);
 			}
 
 			//melon.applyJump();
+			melon.draw();
 		    melon.update();
 
-			melon.draw();
+		    tick++;
 
 		    if(true){
 		        requestAnimationFrame(mainLoop);
@@ -137,7 +184,13 @@
 		}
 
 		function keyDown(e) {
-			melon.applyJump();
+			if(e.keyCode == 32){
+				melon.applyJump();
+			}else if(e.keyCode == 37){
+				melon.fire(0);
+			}else if(e.keyCode == 39){
+				melon.fire(1);
+			}
 		}
 
 		var canvas;
@@ -145,7 +198,9 @@
 		const groundHeight = 300;
 		const WIDTH = 640;
 		const HEIGHT = 480;
+		var tick = 0
 		var camY = 0;
+		var d = new Draw();
 
 		var cloudImg = new Image();
 		var melonManImg = new Image();
@@ -153,17 +208,19 @@
 
 		melonManImg.src = "MelonBall.png";
 
-		cloudImg.src = "cloud.png";
+		cloudImg.src = "Cloud.png";
+
+		treeImg.src = "Tree.png";
 
 		var clouds = [];
-		clouds.push(new staticSprite(100,300,200,200));
-		clouds.push(new staticSprite(300,500,200,200));
+		clouds.push(new staticSprite(100,300,0,0,200,200));
+		clouds.push(new staticSprite(300,500,0,0,200,200));
 
 		var trees = [];
-		trees.push(new staticSprite(10,0,100,100));
-		trees.push(new staticSprite(200,0,100,100));
-		trees.push(new staticSprite(300,0,100,100));
-		trees.push(new staticSprite(400,0,100,100));
+		trees.push(new staticSprite(10,0,0,50,200,200));
+		trees.push(new staticSprite(200,0,0,50,200,200));
+		trees.push(new staticSprite(300,0,0,50,200,200));
+		trees.push(new staticSprite(400,0,0,50,200,200));
 
 		var melon = new Melon();
 
@@ -176,6 +233,7 @@
 		canvas = document.getElementById("myCanvas");
 		window.addEventListener( "keydown", this.keyDown, true);
 		ctx = canvas.getContext("2d");
+		ctx.lineWidth = 3;
 		
 		requestAnimationFrame(mainLoop);
 	</script>
