@@ -1,0 +1,49 @@
+<html lang="en" >
+    <head>
+        <title>AAaaaaaa</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <script src="https://kit.fontawesome.com/ecc5823153.js" crossorigin="anonymous"></script>
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="main.js"></script>
+    </head>
+
+    <body class="body">
+        <div class="nav">
+            <p class="navInt">
+                Internet: 
+                <i id="connected" class="fas fa-check-circle" style="color: #009A34; font-size: 25px; padding: 5px"></i>
+                <i id="notconnected" class="fas fa-times-circle" style="color: #E24A3B; font-size: 25px; padding: 5px"></i>
+
+            </p>
+        </div>
+        
+        <div class="gradient">
+            <div id="landing">
+                <br><br><br>
+                <div class="title">
+                    <i class="fas fa-info-circle" style="color: #E24A3B; font-size: 100px"></i>
+                    <br>
+                    Something seems to be wrong
+                    <br>
+                </div>
+                <div class="subtext">
+                    No internet connection detected
+                    <br><br><br>
+                    <a id="playButton" class="playButton">Play a game</a>
+
+                </div>
+            </div>
+            <div id="game"  class="title">
+                
+                <br>
+                <b>Score: <div id="score">0</div> Levels completed: <div id="levels">0</div></b>
+                <br>
+                
+                <iframe id="gameWindow" width="640" height="480" style="display: inline-block; border: 5px solid #2C354A" ></iframe>
+            </div>
+        </div>
+    </body>
+</html>
