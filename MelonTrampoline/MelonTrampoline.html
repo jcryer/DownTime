@@ -53,14 +53,16 @@
 
 		}
 
-		class Cloud {
-			constructor(startX,startY){
+		class staticSprite {
+			constructor(startX,startY, offX, offY, sizeX, sizeY){
 				this.x = startX;
-				this.y = startY;			
+				this.y = startY;	
+				this.sX = sizeX;
+				this.sY = sizeY;		
 			}
 
 			draw(){
-				ctx.drawImage(cloudImg, this.x, -this.y+camY,200,200);
+				ctx.drawImage(cloudImg, this.x, -this.y+camY,this.sX,this.sY);
 			}
 
 			update(){
@@ -118,7 +120,10 @@
 
 			for(var i = 0; i < clouds.length; i++){
 				clouds[i].draw()
-				clouds[i].update();
+			}
+
+			for(var i = 0; i < trees.length; i++){
+				trees[i].draw();
 			}
 
 			//melon.applyJump();
@@ -144,13 +149,21 @@
 
 		var cloudImg = new Image();
 		var melonManImg = new Image();
+		var treeImg = new Image();
 
 		melonManImg.src = "MelonBall.png";
 
 		cloudImg.src = "cloud.png";
+
 		var clouds = [];
-		clouds.push(new Cloud(100,300));
-		clouds.push(new Cloud(300,500));
+		clouds.push(new staticSprite(100,300,200,200));
+		clouds.push(new staticSprite(300,500,200,200));
+
+		var trees = [];
+		trees.push(new staticSprite(10,0,100,100));
+		trees.push(new staticSprite(200,0,100,100));
+		trees.push(new staticSprite(300,0,100,100));
+		trees.push(new staticSprite(400,0,100,100));
 
 		var melon = new Melon();
 
