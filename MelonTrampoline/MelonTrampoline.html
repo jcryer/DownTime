@@ -50,9 +50,20 @@
 
 		class cloud {
 			constructor(startX,startY){
-				
-				var img = document.getElementById("scream");
-  				ctx.drawImage(img, 10, 10);
+				this.x = startX;
+				this.y = startY;			
+			}
+
+			drawImage(){
+				ctx.drawImage(cloudImg, startX, startY);
+			}
+
+			update(){
+				if(this.y+camY < -100){
+					this.y += 840;
+				}else if(this.y+camY > 840){
+					this.y -= 840;
+				}
 			}
 		}
 
@@ -100,6 +111,9 @@
 		const WIDTH = 640;
 		const HEIGHT = 480;
 		var camY = 0;
+
+		var cloudImg = document.getElementById("cloud");
+
 		var melon = new Melon();
 
 	</script> 
