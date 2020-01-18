@@ -42,7 +42,7 @@
 				ctx.fill();
 				ctx.stroke();
 				*/
-				
+
 				ctx.drawImage(melonManImg, this.x-40, groundHeight-40, 80,80);
 			}
 
@@ -90,6 +90,14 @@
 		    ctx.fillStyle = "#0000"+calcBlue(melon.getY());
 
 			ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+			ctx.fillStyle = "#00FF00";
+
+			ctx.fillRect(0,camY+groundHeight+50,WIDTH,10000);
+			
+			ctx.fillStyle = "#DD8844";
+
+			ctx.fillRect(0,camY+groundHeight+80,WIDTH,10000);
 			
 			ctx.fillStyle = "#000000";
 			if(melon.getY()-10 <= 0){
