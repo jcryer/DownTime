@@ -8,6 +8,8 @@
         <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="main.js"></script>
+        <script src="game.js"></script>
+
     </head>
 
     <body class="body">
@@ -36,12 +38,17 @@
 
                 </div>
             </div>
-            <div id="game"  class="title">
-                
-                <br>
-                <b>Score: <div id="score">0</div> Levels completed: <div id="levels">0</div></b>
-                
-                <iframe id="gameWindow" width="640" height="480" style="display: inline-block; border: 5px solid #2C354A" ></iframe>
+            <div id="game" class="game">
+                <div>
+                    <div class="scores">
+                        <div class="computer"><img width=200px id="computer"/></div>
+                        <div class="health"><img width=300px id="healthBar"/></div>
+                    </div>
+                    <div class="gameFrame">
+                        <iframe id="gameWindow" src="game1.html" width="960" height="720" style="display: inline-block; border: 5px solid #2C354A" ></iframe>
+                    </div>
+                </div>
+
             </div>
         </div>
     </body>

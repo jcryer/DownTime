@@ -10,23 +10,29 @@ var x = 200;
 var y = 10;
 var velx = 1;
 var heights = [10,30,50,70,90];
+var setheights = [10,30,50,70,90];
 var pos = [12,45,56,70,23];
 var vel = [1,-1,1,-1,1];
-var playerx = 150
+var playerx = 150;
 var keyboardinput = 0;
-var cooldown = 100;
-;
+var cooldown = 0;
+var winamount = Math.random()*10 + 10;
+turnstoback = [-100,-100,-100,-100,-100];
+var currentscore = 0;
+
 
 
 function animate(){
 	//c.fillRect(0,0,WIDTH,HEIGHT);
 	//c.fillStyle = "#FFFFFF";
-	cooldown =  cooldown + 1;
-			
+
 	//c.fillStyle = "#FF0000"
+	if(currentscore > winamount){
+		console.log("You have won this game");
+	}
 	c.clearRect(0,0,WIDTH,HEIGHT);
 	c.fillRect(playerx,canvas.height-10,10,10);
-	
+
 	document.addEventListener('keydown', function(event){
 		var key_press = String.fromCharCode(event.keyCode);
 		keyboardinput = event.keyCode;
@@ -39,18 +45,29 @@ function animate(){
 		playerx = playerx + 10;
 	}
 	else if (keyboardinput == 32){
-		cooldown = 0;
 		for(var i =0; i < pos.length; i++){
 			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
 				heights[i] = 2000;
+				turnstoback[i] = 100;
+				currentscore = currentscore + 1;
+				for(var i=0; i<setheights.length;i++){
+					setheights[i] = setheights[i] + 0.3;
+				}
 			}
 		}
 	}
 	keyboardinput = 0;
-	console.log(cooldown);
-	//console.log(keyboardinput);
-	
 
+
+	for(var i =0; i < turnstoback.length;i++){
+		if(turnstoback[i] > 0){
+			turnstoback[i] = turnstoback[i] - 1;
+		}
+		else if(turnstoback[i] > -50){
+			heights[i] = setheights[i];
+			turnstoback[i] = -100;
+		}
+	}
 	for(var i =0 ; i < heights.length; i++){
 		c.fillRect(pos[i], heights[i], 10, 10);
 		c.fillRect(x,y,10,10);
