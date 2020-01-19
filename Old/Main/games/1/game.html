@@ -292,15 +292,19 @@
 	</script> 
 </head>
 <body>
-
-	<canvas id="myCanvas"  width="640" height="480"></canvas>
+<div id="test" style="width: 100%"><canvas id="myCanvas"  width="640" height="480"></canvas></div>
 	<script type="text/javascript">
 		canvas = document.getElementById("myCanvas");
 		window.addEventListener( "keydown", this.keyDown, true);
 		ctx = canvas.getContext("2d");
 		ctx.lineWidth = 3;
 		ctx.font = '25px Arial';
-		
+                    canvas.style.width = '100%';
+            canvas.style.height = '100%';
+		window.onresize = function () {
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+        }
 		requestAnimationFrame(mainLoop);
 	</script>
 </body>
