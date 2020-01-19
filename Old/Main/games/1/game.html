@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		class Draw {
+			constructor(){
+
+			}
+
+			drawLine(x1,y1,x2,y2){
+				ctx.beginPath();
+				ctx.moveTo(x1, -y1+groundHeight+camY);
+				ctx.lineTo(x2, -y2+groundHeight+camY);
+				ctx.stroke();
+			}
+
+			fillRect(x,y,width,height){
+				ctx.fillRect(x,groundHeight+camY-y,width,height);
+			}
+
+			drawText(text,x,y,width){
+				ctx.fillText(text, x, groundHeight+camY-y,width);
+			}
+		}
+
+		class Melon {
+			constructor(){
+				this.x = WIDTH/2;
+				this.y = 0;
+				this.vel = 0;
+				this.jumped = false;
+
+				this.lastFire = 0;
+				this.direction = 0;
+				this.coolDown = 50;
+				this.fireTime = 15;
+				this.isFire = false;
+
+				this.kills = 0;
+
+			}
+
+			update(){
+				if(this.y > 1 && this.jumped == true && this.vel < 0){
+					this.jumped = false;
+				}
+
+				if(this.y > 0){
+					this.vel += -0.5;
+				}else{
+					this.vel += -this.y/100
+				}
+
+				if(tick-this.lastFire < this.fireTime){
+					this.isFire = true;
+				}else{
+					this.isFire = false;
+				}
+
+				for(var i = 0; i < clouds.length; i++){
+					if(clouds[i].isAlive() && this.isFire == true){
+						if(clouds[i].getY()-this.y >= 15 && clouds[i].getY()-this.y <= 110){
+							if((clouds[i].getX() < this.x && this.direction == 0) || (clouds[i].getX() > this.x && this.direction == 1)){
+								clouds[i].kill();
+								this.kills++;
+							}
+						} 
+					}	
+				}
+
+
+				this.y += this.vel;
+				this.vel *= 0.999;
+
+
+				
+			}
+
+			applyJump(){
+				if((this.y <= 0 && this.jumped == false) || (Math.abs(this.vel) < 0.1 && this.y <= 0)){
+					this.vel += 7/(0.5-0.01*this.y);
+				}
+
+				this.jumped = true;
+			}
+
+			draw(){
+				/*
+				ctx.beginPath();
+				ctx.fillStyle = "#FFFF00";
+				ctx.arc(this.x, groundHeight, 20, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.stroke();
+				*/
+
+				ctx.drawImage(melonManImg, this.x-40, groundHeight-40, 80,80);
+				if(this.isFire == true){
+					ctx.strokeStyle = "#FF0000";
+					if(this.direction == 0){
+						d.drawLine(this.x-8,this.y+15,this.x-600,this.y);
+						d.drawLine(this.x+5,this.y+12,this.x-600,this.y);
+					}else{
+						d.drawLine(this.x-8,this.y+15,this.x+600,this.y);
+						d.drawLine(this.x+5,this.y+12,this.x+600,this.y);
+					}
+					ctx.strokeStyle = "#000000";
+				}
+			}
+
+			fire(dir){
+				this.direction = dir;
+				if(tick-this.lastFire > this.fireTime+this.coolDown){
+					this.lastFire = tick;
+				}
+			}
+
+			getY(){
+				return this.y;
+			}
+
+			getKills(){
+				return this.kills;
+			}
+
+
+		}
+
+		class staticSprite {
+			constructor(startX,startY, offX, offY, sizeX, sizeY){
+				this.x = startX;
+				this.y = startY;	
+				this.sX = sizeX;
+				this.sY = sizeY;	
+				this.offX = offX;
+				this.offY = offY;	
+
+				this.alive = true;
+			}
+
+			draw(imgFile){
+				if(this.alive == true){
+					ctx.drawImage(imgFile, this.x-this.offX, camY-this.y+groundHeight-this.offY ,this.sX,this.sY);
+					//d.drawLine(this.x,this.y-30,this.x+100,this.y-30);
+					//d.drawLine(this.x,this.y-110,this.x+100,this.y-110);
+
+				}
+			}
+
+			kill(){
+				this.alive = false;
+			}
+
+			isAlive(){
+				return this.alive;
+			}
+
+			getX(){
+				return this.x+this.offX;
+			}
+
+			getY(){
+				return this.y+this.offY;
+			}
+		}
+
+		function calcBlue(height){
+			var digits = "0123456789ABCDEF";
+			if(height < 0){
+				return "FF";
+			}
+			var dec = parseInt(255*height/2000);
+			if(dec > 255){
+				dec = 255;
+			}
+			var hexDig1 = 15-(parseInt(dec/16));
+			var hexDig2 = 15-(dec-16*parseInt(dec/16));
+
+			return (digits[hexDig1].toString() + digits[hexDig2].toString());
+		}
+
+		function mainLoop(){
+			camY = melon.getY();
+
+
+
+		    ctx.fillStyle = "#0000"+calcBlue(melon.getY());
+
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+			ctx.fillStyle = "#00FF00";
+
+			d.fillRect(0,-50,WIDTH,1000);
+			
+			ctx.fillStyle = "#DD8844";
+
+			d.fillRect(0,-80,WIDTH,1000);
+
+			ctx.fillStyle = "#FFFFFF";
+
+			d.drawText("Press Space To Start",50, -200,500);
+
+
+			ctx.strokeStyle = "#FFFFFF";
+			d.drawLine(0,1500,WIDTH,1500);
+			ctx.strokeStyle = "#000000";
+
+			d.drawText("FINISH", WIDTH/2-100,1400,200);
+			
+			ctx.fillStyle = "#000000";
+			if(melon.getY()-10 <= 0){
+				d.drawLine(0,0,WIDTH/2-20,melon.getY());
+				d.drawLine(WIDTH/2+20, melon.getY(), WIDTH, 0);
+			}else{
+				d.drawLine(0,0,WIDTH,0);
+			}
+
+			for(var i = 0; i < clouds.length; i++){
+				clouds[i].draw(cloudImg);
+			}
+
+			for(var i = 0; i < trees.length; i++){
+				trees[i].draw(treeImg);
+			}
+
+			//melon.applyJump();
+			melon.draw();
+		    melon.update();
+
+		    tick++;
+		    if(hasJumped == true && groundHeight < 300){
+		    	groundHeight += 1;
+			}
+
+			console.log(melon.getKills());
+		    if(melon.getKills() < clouds.length || melon.getY() < 1500){
+		        requestAnimationFrame(mainLoop);
+		    }else{
+		    	window.top.postMessage("done","*");
+		    	console.log("finished");
+		    }
+		}
+
+		function keyDown(e) {
+			if(e.keyCode == 32){
+				hasJumped = true;
+				melon.applyJump();
+			}else if(e.keyCode == 37){
+				melon.fire(0);
+			}else if(e.keyCode == 39){
+				melon.fire(1);
+			}
+		}
+
+		var canvas;
+		var ctx;
+		var groundHeight = 200;
+		const WIDTH = 640;
+		const HEIGHT = 480;
+		var tick = 0
+		var camY = 0;
+		var hasJumped = false;
+		var d = new Draw();
+
+		var cloudImg = new Image();
+		var melonManImg = new Image();
+		var treeImg = new Image();
+
+		melonManImg.src = "MelonBall.png";
+
+		cloudImg.src = "Cloud.png";
+
+		treeImg.src = "Tree.png";
+
+		var clouds = [];
+		clouds.push(new staticSprite(100,300,0,0,200,200));
+
+		
+
+		clouds.push(new staticSprite(350,500,0,0,200,200));
+		clouds.push(new staticSprite(370,750,0,0,200,200));
+		clouds.push(new staticSprite(355,900,0,0,200,200));
+		clouds.push(new staticSprite(330,1000,0,0,200,200));
+
+		var trees = [];
+		trees.push(new staticSprite(10,0,0,50,200,200));
+		trees.push(new staticSprite(200,0,0,50,200,200));
+		trees.push(new staticSprite(300,0,0,50,200,200));
+		trees.push(new staticSprite(400,0,0,50,200,200));
+
+		var melon = new Melon();
+
+	</script> 
+</head>
+<body>
+<div id="test" style="width: 100%"><canvas id="myCanvas"  width="640" height="480"></canvas></div>
+	<script type="text/javascript">
+		canvas = document.getElementById("myCanvas");
+		window.addEventListener( "keydown", this.keyDown, true);
+		ctx = canvas.getContext("2d");
+		ctx.lineWidth = 3;
+		ctx.font = '25px Arial';
+                    canvas.style.width = '100%';
+            canvas.style.height = '100%';
+		window.onresize = function () {
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+        }
+		requestAnimationFrame(mainLoop);
+	</script>
+</body>
+</html>

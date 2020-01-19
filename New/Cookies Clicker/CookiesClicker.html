@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+		var canvas;
+		var ctx;
+		const WIDTH = 640;
+		const HEIGHT = 480;
+		var count = 0;
+		cookiePic = new Image();
+		cookiePic.src = 'Cookies.jpg';
+		cookieIcon = new Image();
+		cookieIcon.src = 'CookieImg.png';
+		warning1 = new Image();
+		warning1.src = 'warning1.jpg';
+		warning2 = new Image();
+		warning2.src = 'warning2.jpg';
+		warning3 = new Image();
+		warning3.src = 'warning3.jpg';
+
+		var cx;
+		var cy;
+		newPos();
+
+		var warningCount = 0;
+
+		function newPos(){
+			cx = Math.floor((Math.random() *600) + 1);
+			cy = Math.floor((Math.random() *430) + 1);
+		}
+
+		function mainLoop(){
+			if(count < 11){
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+				if(warningCount == 1){
+					ctx.drawImage(warning1, cx-78, cy-110);
+				}else if (warningCount == 2){
+					ctx.drawImage(warning2, cx-25, cy-60);
+				}else{
+					ctx.drawImage(warning3, cx-80, cy-115);
+				}
+
+				ctx.drawImage(cookieIcon, cx, cy, 40, 40);
+
+				requestAnimationFrame(mainLoop);
+
+			} else {
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(0,0,WIDTH,HEIGHT);
+			}
+
+		}
+
+		function clickCheck(x, y){
+			if ((cx <= x && x <= (cx + 40)) && (cy <= y && y <= (cy + 40))){
+				if (warningCount != 3){
+					warningCount += 1;
+				} else {
+					warningCount = 1;
+				}
+				return true;	
+			}
+			return false;
+		}
+
+		function endGame(){
+			if(count > 10){
+				return true;
+			}
+			return false;
+		}
+
+
+	</script> 
+</head>
+<body>
+	<h1>Do you accept our cookies?</h1>
+	<canvas id="myCanvas"  width="640" height="480"></canvas>
+	<script type="text/javascript">
+		canvas = document.getElementById("myCanvas");
+		canvas.addEventListener("mousedown", function(event)
+			{
+				var x = new Number();
+		        var y = new Number();
+		        x = event.clientX + document.body.scrollLeft +
+		            document.documentElement.scrollLeft;
+		        y = event.clientY + document.body.scrollTop +
+		            document.documentElement.scrollTop;
+		        
+
+		        x -= canvas.offsetLeft;
+		        y -= canvas.offsetTop;
+
+				console.log(x,y,cx,cy,count);
+				if(clickCheck(x,y)){
+					newPos();
+					count++;
+				}
+				
+				if(endGame()){
+					window.top.postMessage("done","*");
+					var newD = new Date;
+					endMin = newD.getMinutes();
+					endSec = newD.getSeconds();
+					EndTime = (60 * endMin) + endSec;
+					timeTaken = EndTime - StartTime; 
+					alert("Time: "+ timeTaken + " seconds");
+				}
+				});
+
+
+		ctx = canvas.getContext("2d");
+		var d = new Date();
+		min = d.getMinutes();
+		sec = d.getSeconds();
+		StartTime = (60 * min) + sec;
+
+		requestAnimationFrame(mainLoop);
+	</script>
+
+</body>
+</html>
