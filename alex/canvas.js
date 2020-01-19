@@ -66,6 +66,21 @@ function animate(){
 	}
 	console.log(playershoot);
 	if(playershoot > 1){
+
+		for(var i =0; i < pos.length; i++){
+			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
+				heights[i] = 2000;
+				turnstoback[i] = 100;
+				currentscore = currentscore + 1;
+				if(currentscore > 7){
+					for(var i=0; i<setheights.length;i++){
+						setheights[i] = setheights[i] + 0.5;
+					}
+				}
+
+			}
+		}
+		
 		playershoot = playershoot - 1;
 		c.beginPath();
 		c.moveTo(playerx+10,canvas.height-10);
@@ -87,19 +102,6 @@ function animate(){
 		starttime = 0;
 		endtime = 0;
 		playershoot = 10;
-		for(var i =0; i < pos.length; i++){
-			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
-				heights[i] = 2000;
-				turnstoback[i] = 100;
-				currentscore = currentscore + 1;
-				if(currentscore > 7){
-					for(var i=0; i<setheights.length;i++){
-						setheights[i] = setheights[i] + 0.5;
-					}
-				}
-
-			}
-		}
 	}
 	keyboardinput = 0;
 
