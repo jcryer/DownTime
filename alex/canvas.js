@@ -22,7 +22,7 @@ var currentscore = 0;
 var starttime = 0;
 var endtime = 0;
 var delay = 100000;
-
+var chosen = 0;
 
 
 
@@ -41,6 +41,16 @@ function animate(){
 	}
 	c.clearRect(0,0,WIDTH,HEIGHT);
 	c.fillRect(playerx,canvas.height-10,10,10);
+	console.log(delay);
+	if(delay < 15){
+		if(delay==0){
+			delay =10000;
+		}
+		c.beginPath();
+		c.moveTo(pos[chosen],heights[chosen]);
+		c.lineTo(pos[chosen],400);
+		c.stroke();
+	}
 
 	document.addEventListener('keydown', function(event){
 		var key_press = String.fromCharCode(event.keyCode);
@@ -73,6 +83,7 @@ function animate(){
 	keyboardinput = 0;
 
 	if(Math.random()>0.99 && delay > 200 ){
+		chosen = Math.floor(Math.random()*5);
 		delay = 100;
 	}
 
@@ -97,17 +108,7 @@ function animate(){
 		pos[i] += vel[i];
 
 	}
-	if(delay == 0){
-		delay =10000;
-		var chosen = 0;
-		chosen = Math.floor(Math.random()*5);
-		console.log(chosen)
-		c.beginPath();
-		c.moveTo(30,20);
-		c.lineTo(30,400);
-		c.stroke();
 
-	}
 
 
 
