@@ -35,15 +35,19 @@ var loopVar;
 var newVirus;
 
 // Viruses gradually come faster and faster, this modifier affects that
-var newVirusModifier = 1;
+var newVirusModifier;
 
 var health;
 
-var incomingViruses = [];
+var virusesDestroyed;
+var incomingViruses;
 
 function gameStart() {
+    virusesDestroyed = 0;
     newVirus = 0;
+    newVirusModifier = 1;
     health = 100;
+    incomingViruses = [];
     changeComputer(0);
     changeHealthBar();
     loopVar = setInterval(gameLoop,1000);
@@ -109,12 +113,30 @@ function changeHealthBar() {
 
 // 0: standard 1: slightly broken 2: not doing great
 function changeComputer(computerType) {
-    $("#computer").attr("src", "sprites/Computer" +  computerType + ".png");
+    $("#computerImage").attr("src", "sprites/Computer" +  computerType + ".png");
 }
 
 function loseGame() {
     clearInterval(loopVar);
 }
+
+
+window.onmessage = function(e){
+    if (e.data == "done") {
+        var destroyedVirus = 0;
+        incomingViruses.forEach(function (incomingVirus) {
+            if (incomingVirus.isAttacked()) {
+                destroyedVirus = incomingVirus;
+                break;
+            }
+        });
+        if (destroyedVirus != 0) {
+            incomingViruses.pop(destroyedVirus);
+            virusesDestroyed += 1;
+            //newVirusModifier += 0.01;
+        }
+    }
+};
 
 // Misc methods
 function getRandomInt(min, max) {

@@ -42,9 +42,18 @@ body {
     margin-right: 20px;
 }
 
-.computer {
-    margin-left: 55px;
+#computer {
+    float: right;
+}
 
+#wires {
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+#health {
+    margin-top: -170px;
+    margin-left: 30px;
 }
 
 .leftDiv {
@@ -55,11 +64,6 @@ body {
 .rightDiv {
     display: inline-block;
     float: right;
-}
-
-#health {
-    margin-top: -170px;
-    margin-left: 20px;
 }
 
 
