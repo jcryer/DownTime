@@ -6,66 +6,49 @@
 		var ctx;
 		const WIDTH = 640;
 		const HEIGHT = 480;
-		var CookiesX = [];
-		var CookiesY = [];
+		var count = 0;
+		cookiePic = new Image();
+		cookiePic.src = 'Cookies.jpg';
 
-		function cookieCoordinates(){
-			for(var i = 0; i < 20; i++){
-				cookieX = Math.floor((Math.random() *630) + 1);
-				cookieY = Math.floor((Math.random() *470) + 1);
-				CookiesX.push(cookieX);
-				CookiesY.push(cookieY);
-			}
+		var cx;
+		var cy;
+		newPos();
+
+		function newPos(){
+			cx = Math.floor((Math.random() *600) + 1);
+			cy = Math.floor((Math.random() *430) + 1);
 		}
 
 		function mainLoop(){
 			ctx.fillStyle = "#FFFFFF";
 			ctx.fillRect(0,0,WIDTH,HEIGHT);
 
-			for(var i = 0; i < (CookiesX.length); i++){
-				if (CookiesX[i] != "n"){
-					x = CookiesX[i];
-					y = CookiesY[i];
-					ctx.fillStyle = "#FFFFFF";
-					ctx.fillRect(0, 0, WIDTH, HEIGHT);
-					cookiePic = new Image();
-					cookiePic.src = 'Cookies.jpg';
-					cookiePic.onload = function(){
-						ctx.drawImage(cookiePic, (x - 98), (y - 8), 120, 45);
-					}
-					ctx.fillStyle = "#7bae73";
-					ctx.fillRect(x, y, 10, 10);
-					ctx.beginPath();
-					ctx.rect(x, y, 10, 10);
-					ctx.stroke();
-					ctx.beginPath();
-					ctx.rect((x - 100), (y - 10), 120, 30);
-					ctx.stroke();
-				}
-			}
+			ctx.drawImage(cookiePic, cx-100	,cy-5,100,20);
+
+			ctx.fillStyle = "#00FF00";
+			ctx.fillRect(cx,cy,10,10);
+
+
+
+			requestAnimationFrame(mainLoop);
+
 		}
 
 		function clickCheck(x, y){
-			for(var i = 0; i < (CookiesX.length); i++){
-				if (CookiesX != "n"){
-					if ((CookiesX[i] <= x && x <= (CookiesX[i] + 10)) && (CookiesY[i] <= y && y <= (CookiesY[i] + 10))){
-						CookiesX[i] = "n";
-						CookiesY[i] = "n";
-						break
-					}
-				}
+			if ((cx <= x && x <= (cx + 10)) && (cy <= y && y <= (cy + 10))){
+				return true;	
 			}
+			return false;
 		}
 
 		function endGame(){
-			x = true;
-			for(var i = 0; i < (CookiesX.length); i++){
-				if( CookiesX[i] != "n"){
-					x = false
-				}
+			if(count > 5){
+				return true;
 			}
-			return x;
+			return false;
 		}
+
+
 	</script> 
 </head>
 <body>
@@ -73,25 +56,27 @@
 	<canvas id="myCanvas"  width="640" height="480"></canvas>
 	<script type="text/javascript">
 		canvas = document.getElementById("myCanvas");
-		ctx = canvas.getContext("2d");
-		cookieCoordinates();
-		var d = new Date();
-		min = d.getMinutes();
-		sec = d.getSeconds();
-		StartTime = (60 * min) + sec;
-		if (true){
-			requestAnimationFrame(mainLoop);
-
-			let canvasElem = document.querySelector("canvas")
-			canvasElem.addEventListener("mousedown", function(e)
+		canvas.addEventListener("mousedown", function(event)
 			{
-				let rect = canvasElem.getBoundingClientRect();
-				let x = e.clientX - rect.left;
-				let y = e.clientY - rect.top;
-				clickCheck(x, y);
-				requestAnimationFrame(mainLoop);
-				stop = endGame();
-				if(stop){
+				var x = new Number();
+		        var y = new Number();
+		        x = event.clientX + document.body.scrollLeft +
+		            document.documentElement.scrollLeft;
+		        y = event.clientY + document.body.scrollTop +
+		            document.documentElement.scrollTop;
+		        
+
+		        x -= canvas.offsetLeft;
+		        y -= canvas.offsetTop;
+
+				console.log(x,y,cx,cy,count);
+				if(clickCheck(x,y)){
+					newPos();
+					count++;
+				}
+				
+				if(endGame()){
+					window.top.postMessage("done","*");
 					var newD = new Date;
 					endMin = newD.getMinutes();
 					endSec = newD.getSeconds();
@@ -99,8 +84,15 @@
 					timeTaken = EndTime - StartTime; 
 					alert("Time: "+ timeTaken + " seconds");
 				}
-				})
-		}
+				});
+
+
+		ctx = canvas.getContext("2d");
+		var d = new Date();
+		min = d.getMinutes();
+		sec = d.getSeconds();
+		StartTime = (60 * min) + sec;
+		requestAnimationFrame(mainLoop);
 	</script>
 
 </body>
