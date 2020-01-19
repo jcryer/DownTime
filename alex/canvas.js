@@ -111,6 +111,7 @@ function animate(){
 
 	document.addEventListener('keyup', function(event){
 		var key_press = String.fromCharCode(event.keyCode);
+		keyboardinput = event.keyCode;
 		if(keyboardinput == 37){
 			playerVel = 0
 		}
