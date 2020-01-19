@@ -27,6 +27,9 @@ class Virus {
     }
 }
 
+var canvas = document.getElementById('viewport'),
+var ctx = canvas.getContext('2d');
+
 const VirusTypes = Object.freeze({"Melon":1, "test2":2, "test3":3});
 
 var loopVar;
@@ -50,6 +53,7 @@ function gameStart() {
     incomingViruses = [];
     changeComputer(0);
     changeHealthBar();
+    
     loopVar = setInterval(gameLoop,1000);
 }
 
@@ -113,7 +117,10 @@ function changeHealthBar() {
 
 // 0: standard 1: slightly broken 2: not doing great
 function changeComputer(computerType) {
-    $("#computerImage").attr("src", "sprites/Computer" +  computerType + ".png");
+    base_image = new Image();
+    base_image.src = "sprites/Computer" + computerType + ".png";
+    ctx.drawImage(base_image, 100, 100);
+    //$("#computerImage").attr("src", "sprites/Computer" +  computerType + ".png");
 }
 
 function loseGame() {
@@ -138,10 +145,10 @@ window.onmessage = function(e){
     }
 };
 
+
 // Misc methods
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
