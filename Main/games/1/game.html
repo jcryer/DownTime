@@ -36,10 +36,11 @@
 				this.fireTime = 15;
 				this.isFire = false;
 
+				this.kills = 0;
+
 			}
 
 			update(){
-				console.log(this.y);
 				if(this.y > 1 && this.jumped == true && this.vel < 0){
 					this.jumped = false;
 				}
@@ -58,9 +59,10 @@
 
 				for(var i = 0; i < clouds.length; i++){
 					if(clouds[i].isAlive() && this.isFire == true){
-						if(clouds[i].getY()-this.y >= 10 && clouds[i].getY()-this.y <= 110){
+						if(clouds[i].getY()-this.y >= 15 && clouds[i].getY()-this.y <= 110){
 							if((clouds[i].getX() < this.x && this.direction == 0) || (clouds[i].getX() > this.x && this.direction == 1)){
 								clouds[i].kill();
+								this.kills++;
 							}
 						} 
 					}	
@@ -114,6 +116,10 @@
 
 			getY(){
 				return this.y;
+			}
+
+			getKills(){
+				return this.kills;
 			}
 
 
@@ -191,9 +197,14 @@
 
 			ctx.fillStyle = "#FFFFFF";
 
-			d.drawText("Hello this is MelonJumpStar or MelonJS for short.",50, -200,500);
+			d.drawText("Press Space To Start",50, -200,500);
 
-			d.drawText("To play jump on the trampoline using space, then fire deadly laser beams with the left and right arrows",20, -250,600);
+
+			ctx.strokeStyle = "#FFFFFF";
+			d.drawLine(0,1500,WIDTH,1500);
+			ctx.strokeStyle = "#000000";
+
+			d.drawText("FINISH", WIDTH/2-100,1400,200);
 			
 			ctx.fillStyle = "#000000";
 			if(melon.getY()-10 <= 0){
@@ -220,8 +231,12 @@
 		    	groundHeight += 1;
 			}
 
-		    if(true){
+			console.log(melon.getKills());
+		    if(melon.getKills() < clouds.length || melon.getY() < 1500){
 		        requestAnimationFrame(mainLoop);
+		    }else{
+		    	window.top.postMessage("done","*");
+		    	console.log("finished");
 		    }
 		}
 
