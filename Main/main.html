@@ -38,11 +38,31 @@
 
                 </div>
             </div>
-            <div id="game"  class="title">
-                <img id="healthBar"/>
-                <img id="computer"/>
+            
+            <div id="game" class="game">
+                <div>
+                    <div class="leftDiv">
+                        <div id="health"><img width=600px id="healthBar"/></div>
 
-                <!--<iframe id="gameWindow" width="640" height="480" style="display: inline-block; border: 5px solid #2C354A" ></iframe>-->
+                    </div>
+                    <div class="rightDiv">
+                        <br>
+                        <div id="monitor"><iframe id="gameWindow" src="game1.html" width="640" height="480" style="display: inline-block; border: 5px solid #2C354A" ></iframe></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="leftDiv">
+                        <canvas id="myCanvas" height="400"></canvas>
+
+                    </div>
+                    <!--
+                    <div class="leftDiv">
+                         <div id="wires"><img width=1320px src="sprites/wires.png"/></div>
+                    </div>
+                    <div class="rightDiv">
+                         <div id="computer"><img width=390px id="computerImage"/></div>
+                    </div>-->
+                </div>
             </div>
         </div>
     </body>
