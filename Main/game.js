@@ -28,8 +28,9 @@ $(document).ready(function() {
         }
         draw() {
             if (this.virusType == VirusTypes.Melon) {
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(this.x, this.y, 10, 10);
+                ctx.fillStyle = "#666666";
+                ctx.fillRect(this.x, this.y, 50, 50);
+                console.log("aa: " + this.x + " " + this.y);
             }
         }
     }
@@ -116,6 +117,7 @@ $(document).ready(function() {
         health -= 10;
         changeHealthBar();
         if (health <= 0) {
+            changeComputer(3);
             loseGame();
         }
         else if (health == 50) {
@@ -164,12 +166,17 @@ $(document).ready(function() {
     function clickCheck(x, y) {
         console.log(x,y-680);
         incomingViruses.forEach(function (incomingVirus) {
-            //if (!incomingVirus.isAttacked() && (incomingVirus.x <= x && x <= (incomingVirus.x + 10)) && (incomingVirus.y <= y && y <= (incomingVirus.y + 10))) {
+            if (incomingVirus.isAttacked()) {
+                return;
+            }
+        });
+        incomingViruses.forEach(function (incomingVirus) {
+            if (!incomingVirus.isAttacked() && (incomingVirus.x <= x && x <= (incomingVirus.x + 50)) && (incomingVirus.y <= y && y <= (incomingVirus.y + 50))) {
                 console.log("hello");
                 incomingVirus.attack();
                 loadMinigame(incomingVirus.getType());
                 return;
-            //}
+            }
         });
     }
     
@@ -183,6 +190,8 @@ $(document).ready(function() {
         x -= canvas.offsetLeft;
         y -= canvas.offsetTop;
         
+        x += 100;
+        y -=680;
         clickCheck(x, y);
     });
 });
