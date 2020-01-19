@@ -1,0 +1,194 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.body{
+  background-image: url('https://ordinaryfaith.net/wp-content/uploads/2016/03/Gray-plain-website-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.form {
+  font-family: "Titillium Web", sans-serif;
+  position: relative;
+  z-index: 1;
+  background: #48c9b0;
+  max-width: 360px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  margin: 0 auto;
+}
+.container:before, .container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.container .info {
+  margin: 50px auto;
+  text-align: center;
+}
+.container .info h1 {
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+}
+.container .info span {
+  color: #4d4d4d;
+  font-size: 12px;
+}
+.container .info span a {
+  color: #000000;
+  text-decoration: none;
+}
+.container .info span .fa {
+  color: #EF3B3A;
+}
+body {
+  background: #76b852; /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+  background: -moz-linear-gradient(right, #76b852, #8DC26F);
+  background: -o-linear-gradient(right, #76b852, #8DC26F);
+  background: linear-gradient(to left, #76b852, #8DC26F);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lWindHead {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+
+
+.lWindBody {
+  padding: 2px 16px;
+}
+
+
+.lWindFoot {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+
+.lWind {
+  display: none;
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+
+.square {
+    float:left;
+    position: relative;
+    width: 30%;
+    padding-bottom : 30%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    background-color:#1E1E1E;
+    overflow:hidden;
+}
+
+.content {
+    position:absolute;
+    height:100%; /* = 100% - 2*5% padding */
+    width:100%; /* = 100% - 2*5% padding */
+    padding: 5%;
+    
+}
+.table{
+    display:table;
+    width:100%;
+    height:100%;
+}
+.table-cell{
+    display:table-cell;
+    vertical-align:middle;
+}
+/*  For responsive images */
+
+.content .rs{
+    width:auto;
+    height:auto;
+    max-height:90%;
+    max-width:100%;
+}
+/*  For responsive images as background */
+
+.bg{
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */
+    color:#fff;
+}
+/*  following just for the demo */
+
+
+body {
+    font-size:20px;
+    font-family: 'Lato',verdana, sans-serif;
+    color: #fff;
+    text-align:center;
+    background:#ECECEC;
+}
+p{
+    margin:0;
+    padding:0;
+    text-align:left;
+}
+
+.numbers{
+    font-weight:900;
+    font-size:100px;
+}
+
+#bottom {
+    clear:both;
+    margin:0 1.66%;
+    width:89.68%;
+    padding: 3.5%;
+    background-color:#1E1E1E;
+    color: #fff;
+}
+#bottom p{
+    text-align:center;
+    line-height:2em;
+}
+#bottom a{
+    color: #000;
+    text-decoration:none;
+    border:1px solid #000;
+    padding:10px 20px 12px;
+    line-height:70px;
+    background:#ccc;
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#bottom a:hover{
+    background:#ECECEC;
+    border:1px solid #fff;
+}
