@@ -9,8 +9,8 @@
 		var count = 0;
 		cookiePic = new Image();
 		cookiePic.src = 'Cookies.jpg';
-		messagePic = new Image();
-		messagePic.src = 'acceptCookies.jpg';
+		cookieIcon = new Image();
+		cookieIcon.src = 'CookieImg';
 
 		var cx;
 		var cy;
@@ -28,8 +28,10 @@
 
 				ctx.drawImage(cookiePic, cx-100	,cy-5,100,20);
 
-				ctx.fillStyle = "#00FF00";
-				ctx.fillRect(cx,cy,10,10);
+				ctx.drawImage(cookieIcon, cx, cy, 10, 10);
+
+				/ctx.fillStyle = "#00FF00";
+				ctx.fillRect(cx,cy,10,10);/
 
 				requestAnimationFrame(mainLoop);
 			} else {
