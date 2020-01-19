@@ -24,13 +24,24 @@
 
 		var warningCount = 0;
 
+		function timeTaken(){
+			var newD = new Date;
+			endMin = newD.getMinutes();
+			endSec = newD.getSeconds();
+			EndTime = (60 * endMin) + endSec;
+			timePassed = EndTime - StartTime; 
+			return timePassed;
+		}
+
 		function newPos(){
 			cx = Math.floor((Math.random() *600) + 1);
 			cy = Math.floor((Math.random() *430) + 1);
 		}
 
 		function mainLoop(){
-			if(count < 11){
+			if(timeTaken() < 31){
+				document.getElementById("timer").innerHTML = "Time Passed: " + timeTaken() +" seconds";
+
 				ctx.fillStyle = "#FFFFFF";
 				ctx.fillRect(0,0,WIDTH,HEIGHT);
 
@@ -49,12 +60,16 @@
 			} else {
 				ctx.fillStyle = "#FFFFFF";
 				ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+				window.top.postMessage("done","*");
 			}
 
 		}
 
 		function clickCheck(x, y){
 			if ((cx <= x && x <= (cx + 40)) && (cy <= y && y <= (cy + 40))){
+				count += 1;
+				document.getElementById("clicks").innerHTML = "Cookies Clicked: " + count;
 				if (warningCount != 3){
 					warningCount += 1;
 				} else {
@@ -65,19 +80,12 @@
 			return false;
 		}
 
-		function endGame(){
-			if(count > 10){
-				return true;
-			}
-			}
-			return false;
-		}
-
 
 	</script> 
 </head>
 <body>
-	<h1>Do you accept our cookies?</h1>
+	<h3 id = "clicks" >Cookies Clicked: 0</h3>
+	<h3 id = "timer" > "Time Passed: 0 seconds"</h3>
 	<canvas id="myCanvas"  width="640" height="480"></canvas>
 	<script type="text/javascript">
 		canvas = document.getElementById("myCanvas");
@@ -97,17 +105,6 @@
 				console.log(x,y,cx,cy,count);
 				if(clickCheck(x,y)){
 					newPos();
-					count++;
-				}
-				
-				if(endGame()){
-					window.top.postMessage("done","*");
-					var newD = new Date;
-					endMin = newD.getMinutes();
-					endSec = newD.getSeconds();
-					EndTime = (60 * endMin) + endSec;
-					timeTaken = EndTime - StartTime; 
-					alert("Time: "+ timeTaken + " seconds");
 				}
 				});
 
