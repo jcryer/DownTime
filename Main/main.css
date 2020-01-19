@@ -44,11 +44,11 @@ body {
 
 #computer {
     float: right;
+    margin-left: -150px;
 }
 
 #wires {
-    margin-top: 100px;
-    margin-left: 100px;
+    margin-top: 50px;
 }
 
 #health {
