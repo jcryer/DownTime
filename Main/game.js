@@ -27,7 +27,7 @@ class Virus {
     }
 }
 
-const VirusTypes = Object.freeze({"test":1, "test2":2, "test3":3});
+const VirusTypes = Object.freeze({"Melon":1, "test2":2, "test3":3});
 
 var loopVar;
 
@@ -66,7 +66,7 @@ function loseTimeToVirus() {
 
 // Creates a new virus
 function spawnNewVirus() {
-    var virus = new Virus(VirusTypes.test2);
+    var virus = new Virus(VirusTypes.Melon);
     incomingViruses.push(virus);
 }
 
