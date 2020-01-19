@@ -10,11 +10,19 @@
 		cookiePic = new Image();
 		cookiePic.src = 'Cookies.jpg';
 		cookieIcon = new Image();
-		cookieIcon.src = 'CookieImg';
+		cookieIcon.src = 'CookieImg.png';
+		warning1 = new Image();
+		warning1.src = 'warning1.jpg';
+		warning2 = new Image();
+		warning2.src = 'warning2.jpg';
+		warning3 = new Image();
+		warning3.src = 'warning3.jpg';
 
 		var cx;
 		var cy;
 		newPos();
+
+		var warningCount = 0;
 
 		function newPos(){
 			cx = Math.floor((Math.random() *600) + 1);
@@ -22,18 +30,22 @@
 		}
 
 		function mainLoop(){
-			if(count < 6){
+			if(count < 11){
 				ctx.fillStyle = "#FFFFFF";
 				ctx.fillRect(0,0,WIDTH,HEIGHT);
 
-				ctx.drawImage(cookiePic, cx-100	,cy-5,100,20);
+				if(warningCount == 1){
+					ctx.drawImage(warning1, cx-78, cy-110);
+				}else if (warningCount == 2){
+					ctx.drawImage(warning2, cx-25, cy-60);
+				}else{
+					ctx.drawImage(warning3, cx-80, cy-115);
+				}
 
-				ctx.drawImage(cookieIcon, cx, cy, 10, 10);
-
-				/ctx.fillStyle = "#00FF00";
-				ctx.fillRect(cx,cy,10,10);/
+				ctx.drawImage(cookieIcon, cx, cy, 40, 40);
 
 				requestAnimationFrame(mainLoop);
+
 			} else {
 				ctx.fillStyle = "#FFFFFF";
 				ctx.fillRect(0,0,WIDTH,HEIGHT);
@@ -42,15 +54,21 @@
 		}
 
 		function clickCheck(x, y){
-			if ((cx <= x && x <= (cx + 10)) && (cy <= y && y <= (cy + 10))){
+			if ((cx <= x && x <= (cx + 40)) && (cy <= y && y <= (cy + 40))){
+				if (warningCount != 3){
+					warningCount += 1;
+				} else {
+					warningCount = 1;
+				}
 				return true;	
 			}
 			return false;
 		}
 
 		function endGame(){
-			if(count > 5){
+			if(count > 10){
 				return true;
+			}
 			}
 			return false;
 		}
@@ -59,7 +77,7 @@
 	</script> 
 </head>
 <body>
-
+	<h1>Do you accept our cookies?</h1>
 	<canvas id="myCanvas"  width="640" height="480"></canvas>
 	<script type="text/javascript">
 		canvas = document.getElementById("myCanvas");
