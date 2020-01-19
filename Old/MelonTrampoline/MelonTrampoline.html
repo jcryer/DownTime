@@ -41,6 +41,10 @@
 			}
 
 			update(){
+				if(this.y > highest){
+					highest = parseInt(this.y);
+				}
+
 				if(this.y > 1 && this.jumped == true && this.vel < 0){
 					this.jumped = false;
 				}
@@ -199,13 +203,9 @@
 
 			d.drawText("Press Space To Start",50, -200,500);
 
+			ctx.fillText("Your High Score: "+highest.toString(),10,50);
 
-			ctx.strokeStyle = "#FFFFFF";
-			d.drawLine(0,1500,WIDTH,1500);
-			ctx.strokeStyle = "#000000";
 
-			d.drawText("FINISH", WIDTH/2-100,1400,200);
-			
 			ctx.fillStyle = "#000000";
 			if(melon.getY()-10 <= 0){
 				d.drawLine(0,0,WIDTH/2-20,melon.getY());
@@ -221,6 +221,8 @@
 			for(var i = 0; i < trees.length; i++){
 				trees[i].draw(treeImg);
 			}
+
+
 
 			//melon.applyJump();
 			melon.draw();
@@ -258,6 +260,7 @@
 		const HEIGHT = 480;
 		var tick = 0
 		var camY = 0;
+		var highest = 0;
 		var hasJumped = false;
 		var d = new Draw();
 

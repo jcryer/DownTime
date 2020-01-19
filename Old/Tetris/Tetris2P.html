@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+
+
+
+		var canvas;
+		var ctx;
+		const WIDTH = 640;
+		const HEIGHT = 480;
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas"  width="640" height="480"></canvas>
+	<script type="text/javascript">
+		canvas = document.getElementById("myCanvas");
+		window.addEventListener( "keydown", this.keyDown, true);
+		ctx = canvas.getContext("2d");
+		ctx.lineWidth = 3;
+		ctx.font = '25px Arial';
+		
+		requestAnimationFrame(mainLoop);
+	</script>	
+</body>
