@@ -27,6 +27,8 @@ var virusImg = new Image();
 virusImg.src = 'virus.png';
 var background = new Image();
 background.src = 'background.png';
+var laser = new Image();
+laser.src = 'LaserMelon.png';
 var playershoot = 0;
 var playerfire = true;
 var anotherdelay = 0;
@@ -50,7 +52,7 @@ function animate(){
 		window.top.postMessage('done','*');
 	}
 	c.drawImage(background, 0,0,WIDTH,HEIGHT);
-	c.fillRect(playerx,canvas.height-10,10,10);
+	c.drawImage(laser,playerx,canvas.height-20,20,20);
 	if(delay < 15){
 		if(delay==0){
 			delay =10000;
@@ -64,8 +66,21 @@ function animate(){
 			anotherdelay = 200;
 		}
 	}
-	console.log(playershoot);
+
 	if(playershoot > 1){
+		for(var i =0; i < pos.length; i++){
+			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
+				heights[i] = 2000;
+				turnstoback[i] = 100;
+				currentscore = currentscore + 1;
+				if(currentscore > 7){
+					for(var i=0; i<setheights.length;i++){
+						setheights[i] = setheights[i] + 0.5;
+					}
+				}
+
+			}
+		}
 		playershoot = playershoot - 1;
 		c.beginPath();
 		c.moveTo(playerx+10,canvas.height-10);
@@ -87,19 +102,6 @@ function animate(){
 		starttime = 0;
 		endtime = 0;
 		playershoot = 10;
-		for(var i =0; i < pos.length; i++){
-			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
-				heights[i] = 2000;
-				turnstoback[i] = 100;
-				currentscore = currentscore + 1;
-				if(currentscore > 7){
-					for(var i=0; i<setheights.length;i++){
-						setheights[i] = setheights[i] + 0.5;
-					}
-				}
-
-			}
-		}
 	}
 	keyboardinput = 0;
 
@@ -119,7 +121,7 @@ function animate(){
 		}
 	}
 	for(var i =0 ; i < heights.length; i++){
-		c.drawImage(virusImg, pos[i]-10,heights[i]-10,20,20);
+		c.drawImage(virusImg, pos[i]-10,heights[i]-10,30,30);
 		if(pos[i] > canvas.width-10){
 			vel[i] = -vel[i];
 		}
