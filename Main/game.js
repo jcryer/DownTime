@@ -1,36 +1,48 @@
-class Virus {
-   constructor(virusType) {
-       this.virusType = virusType;
-       this.distance = 10;  
-       this.beingAttacked = false;
-   }
-    getType() {
-        return this.virusType;
-    }
-    
-    getDistance() {
-        return this.distance;
-    }
-    reduceDistance() {
-        this.distance -= 1;
-    }
-    
-    isAttacked() {
-        return this.beingAttacked;
-    }
-    
-    attack() {
-        this.beingAttacked = true;
-    }
-    draw() {
-        // Hmm
-    }
-}
+$(document).ready(function() {
+    class Virus {
+       constructor(virusType) {
+           this.virusType = virusType;
+           this.x = 0;
+           this.y = getRandomInt(20, 120);
+           this.distance = 100;  
+           this.beingAttacked = false;
+       }
+        getType() {
+            return this.virusType;
+        }
 
-var canvas = document.getElementById('viewport'),
-var ctx = canvas.getContext('2d');
+        getDistance() {
+            return this.distance;
+        }
+        reduceDistance() {
+            this.distance -= 1;
+            this.x += 14;
+        }
 
-const VirusTypes = Object.freeze({"Melon":1, "test2":2, "test3":3});
+        isAttacked() {
+            return this.beingAttacked;
+        }
+
+        attack() {
+            this.beingAttacked = true;
+        }
+        draw() {
+            if (this.virusType == VirusTypes.Melon) {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(this.x, this.y, 10, 10);
+            }
+        }
+    }
+
+
+    var canvas = document.getElementById("canvas");
+
+    var ctx = canvas.getContext("2d");
+
+    canvas.width = 1820;
+    canvas.height = 208;
+
+    const VirusTypes = Object.freeze({"Melon":1});
 
 var loopVar;
 
@@ -45,7 +57,7 @@ var health;
 var virusesDestroyed;
 var incomingViruses;
 
-function gameStart() {
+$.fn.gameStart = function(){ 
     virusesDestroyed = 0;
     newVirus = 0;
     newVirusModifier = 1;
@@ -53,11 +65,13 @@ function gameStart() {
     incomingViruses = [];
     changeComputer(0);
     changeHealthBar();
-    
-    loopVar = setInterval(gameLoop,1000);
+
+    loopVar = setInterval(gameLoop,100);
 }
 
 function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     loseTimeToVirus();
     checkViruses();
     // Needs to do actual minigame shit
@@ -67,7 +81,7 @@ function loseTimeToVirus() {
     newVirus -= 1;
     if (newVirus <= 0) {
         spawnNewVirus();
-        var spawnTime = 200/newVirusModifier;
+        var spawnTime = 50/newVirusModifier;
         newVirus = getRandomInt(spawnTime, spawnTime*3);
     }
 }
@@ -115,12 +129,9 @@ function changeHealthBar() {
     $("#healthBar").attr("src", "sprites/HealthBar" +  health + ".png");
 }
 
-// 0: standard 1: slightly broken 2: not doing great
+// 0: standard 1: slightly broken 2: not doing great 3: dead
 function changeComputer(computerType) {
-    base_image = new Image();
-    base_image.src = "sprites/Computer" + computerType + ".png";
-    ctx.drawImage(base_image, 100, 100);
-    //$("#computerImage").attr("src", "sprites/Computer" +  computerType + ".png");
+    $("#computerImage").attr("src", "sprites/Computer" +  computerType + ".png");
 }
 
 function loseGame() {
@@ -147,6 +158,10 @@ window.onmessage = function(e){
 
 
 // Misc methods
+
+/*
+*/
+});
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
