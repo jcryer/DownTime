@@ -19,16 +19,25 @@ var cooldown = 0;
 var winamount = Math.random()*10 + 10;
 turnstoback = [-100,-100,-100,-100,-100];
 var currentscore = 0;
+var starttime = 0;
+var endtime = 0;
+var delay = 100000;
+
 
 
 
 function animate(){
+	endtime = endtime + 1;
+	if(delay > 0){
+		delay = delay -1;
+	}
 	//c.fillRect(0,0,WIDTH,HEIGHT);
 	//c.fillStyle = "#FFFFFF";
 
 	//c.fillStyle = "#FF0000"
 	if(currentscore > winamount){
 		console.log("You have won this game");
+		window.top.postMessage('done','*');
 	}
 	c.clearRect(0,0,WIDTH,HEIGHT);
 	c.fillRect(playerx,canvas.height-10,10,10);
@@ -37,26 +46,35 @@ function animate(){
 		var key_press = String.fromCharCode(event.keyCode);
 		keyboardinput = event.keyCode;
 	})
-	//37 is left and 39 is right
+	//37 is left and 39 is righ
 	if(keyboardinput == 37 && playerx>0 ){
 		playerx = playerx -10;
 	}
 	else if(keyboardinput == 39 && playerx<canvas.width-10){
 		playerx = playerx + 10;
 	}
-	else if (keyboardinput == 32){
+	else if (keyboardinput == 32 && endtime - starttime > 100){
+		starttime = 0;
+		endtime = 0;
 		for(var i =0; i < pos.length; i++){
 			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
 				heights[i] = 2000;
 				turnstoback[i] = 100;
 				currentscore = currentscore + 1;
-				for(var i=0; i<setheights.length;i++){
-					setheights[i] = setheights[i] + 0.3;
+				if(currentscore > 7){
+					for(var i=0; i<setheights.length;i++){
+						setheights[i] = setheights[i] + 0.5;
+					}
 				}
+
 			}
 		}
 	}
 	keyboardinput = 0;
+
+	if(Math.random()>0.99 && delay > 200 ){
+		delay = 100;
+	}
 
 
 	for(var i =0; i < turnstoback.length;i++){
@@ -70,7 +88,6 @@ function animate(){
 	}
 	for(var i =0 ; i < heights.length; i++){
 		c.fillRect(pos[i], heights[i], 10, 10);
-		c.fillRect(x,y,10,10);
 		if(pos[i] > canvas.width-10){
 			vel[i] = -vel[i];
 		}
@@ -80,10 +97,28 @@ function animate(){
 		pos[i] += vel[i];
 
 	}
+	if(delay == 0){
+		delay =10000;
+		var chosen = 0;
+		chosen = Math.floor(Math.random()*5);
+		console.log(chosen)
+		c.beginPath();
+		c.moveTo(30,20);
+		c.lineTo(30,400);
+		c.stroke();
+
+	}
+
+
+
+
+
+
+
 	if(true){
 		requestAnimationFrame(animate);
 	}
 
 }
+
 animate();
-;
