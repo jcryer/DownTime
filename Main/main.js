@@ -20,7 +20,8 @@ $( document ).ready(function() {
     $("#playButton").click(function() {
         $("#landing").hide();
         $("#game").show();
-        gameStart();
+        $.fn.gameStart();
+        //gameStart();
         //$('#gameWindow').attr('src', "game1.html");
     });
     

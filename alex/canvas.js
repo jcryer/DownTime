@@ -23,13 +23,25 @@ var starttime = 0;
 var endtime = 0;
 var delay = 100000;
 var chosen = 0;
-
-
-
+var virusImg = new Image();
+virusImg.src = 'virus.png';
+var background = new Image();
+background.src = 'background.png';
+var laser = new Image();
+laser.src = 'LaserMelon.png';
+var playershoot = 0;
+var playerfire = true;
+var anotherdelay = 0;
 function animate(){
 	endtime = endtime + 1;
 	if(delay > 0){
 		delay = delay -1;
+	}
+	if(anotherdelay > 1){
+		anotherdelay - 1;
+	}
+	if(anotherdelay = 1){
+		playerfire = true;
 	}
 	//c.fillRect(0,0,WIDTH,HEIGHT);
 	//c.fillStyle = "#FFFFFF";
@@ -39,9 +51,8 @@ function animate(){
 		console.log("You have won this game");
 		window.top.postMessage('done','*');
 	}
-	c.clearRect(0,0,WIDTH,HEIGHT);
-	c.fillRect(playerx,canvas.height-10,10,10);
-	console.log(delay);
+	c.drawImage(background, 0,0,WIDTH,HEIGHT);
+	c.drawImage(laser,playerx,canvas.height-20,20,20);
 	if(delay < 15){
 		if(delay==0){
 			delay =10000;
@@ -50,22 +61,13 @@ function animate(){
 		c.moveTo(pos[chosen],heights[chosen]);
 		c.lineTo(pos[chosen],400);
 		c.stroke();
+		if(pos[chosen] == playerx){
+			playerfire = false;
+			anotherdelay = 200;
+		}
 	}
 
-	document.addEventListener('keydown', function(event){
-		var key_press = String.fromCharCode(event.keyCode);
-		keyboardinput = event.keyCode;
-	})
-	//37 is left and 39 is righ
-	if(keyboardinput == 37 && playerx>0 ){
-		playerx = playerx -10;
-	}
-	else if(keyboardinput == 39 && playerx<canvas.width-10){
-		playerx = playerx + 10;
-	}
-	else if (keyboardinput == 32 && endtime - starttime > 100){
-		starttime = 0;
-		endtime = 0;
+	if(playershoot > 1){
 		for(var i =0; i < pos.length; i++){
 			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
 				heights[i] = 2000;
@@ -79,6 +81,27 @@ function animate(){
 
 			}
 		}
+		playershoot = playershoot - 1;
+		c.beginPath();
+		c.moveTo(playerx+10,canvas.height-10);
+		c.lineTo(playerx,0);
+		c.stroke();
+	}
+	document.addEventListener('keydown', function(event){
+		var key_press = String.fromCharCode(event.keyCode);
+		keyboardinput = event.keyCode;
+	})
+	//37 is left and 39 is righ
+	if(keyboardinput == 37 && playerx>0 ){
+		playerx = playerx -10;
+	}
+	else if(keyboardinput == 39 && playerx<canvas.width-10){
+		playerx = playerx + 10;
+	}
+	else if (keyboardinput == 32 && endtime - starttime > 100 && playerfire == true){
+		starttime = 0;
+		endtime = 0;
+		playershoot = 10;
 	}
 	keyboardinput = 0;
 
@@ -98,7 +121,7 @@ function animate(){
 		}
 	}
 	for(var i =0 ; i < heights.length; i++){
-		c.fillRect(pos[i], heights[i], 10, 10);
+		c.drawImage(virusImg, pos[i]-10,heights[i]-10,30,30);
 		if(pos[i] > canvas.width-10){
 			vel[i] = -vel[i];
 		}

@@ -44,18 +44,21 @@ body {
 
 #computer {
     float: right;
-    margin-left: -150px;
+    position: relative;
+    margin-top: 100px;
+    margin-left: -100px;
 }
 
-#wires {
-    margin-top: 50px;
-}
 
 #health {
     margin-top: -170px;
     margin-left: 30px;
 }
 
+#canvas{
+    position:relative;
+    z-index:20;
+}
 .leftDiv {
     display: inline-block;
     float: left;
@@ -65,6 +68,8 @@ body {
     display: inline-block;
     float: right;
 }
+
+.img{position:absolute;z-index:1;}
 
 
 .playButton {
