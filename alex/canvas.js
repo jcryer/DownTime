@@ -9,11 +9,12 @@ const HEIGHT = 480;
 var x = 200;
 var y = 10;
 var velx = 1;
-var heights = [10,30,50,70,90];
-var setheights = [10,30,50,70,90];
+var heights = [40,120,200,280,360];
+var setheights = [40,120,200,280,360];
 var pos = [12,45,56,70,23];
 var vel = [1,-1,1,-1,1];
 var playerx = 150;
+var playerVel = 0;
 var keyboardinput = 0;
 var cooldown = 0;
 var winamount = Math.random()*10 + 10;
@@ -33,6 +34,9 @@ var playershoot = 0;
 var playerfire = true;
 var anotherdelay = 0;
 function animate(){
+
+	playerx += playerVel;
+
 	endtime = endtime + 1;
 	if(delay > 0){
 		delay = delay -1;
@@ -52,14 +56,14 @@ function animate(){
 		window.top.postMessage('done','*');
 	}
 	c.drawImage(background, 0,0,WIDTH,HEIGHT);
-	c.drawImage(laser,playerx,canvas.height-20,20,20);
+	c.drawImage(laser,playerx,canvas.height-60	,60,60);
 	if(delay < 15){
 		if(delay==0){
 			delay =10000;
 		}
 		c.beginPath();
-		c.moveTo(pos[chosen],heights[chosen]);
-		c.lineTo(pos[chosen],400);
+		c.moveTo(pos[chosen]+30,heights[chosen]+30);
+		c.lineTo(pos[chosen]+30, 500);
 		c.stroke();
 		if(pos[chosen] == playerx){
 			playerfire = false;
@@ -69,7 +73,7 @@ function animate(){
 
 	if(playershoot > 1){
 		for(var i =0; i < pos.length; i++){
-			if(playerx > pos[i] - 5 && playerx < pos[i] + 5){
+			if(playerx > pos[i] - 30 && playerx < pos[i] + 30){
 				heights[i] = 2000;
 				turnstoback[i] = 100;
 				currentscore = currentscore + 1;
@@ -83,20 +87,20 @@ function animate(){
 		}
 		playershoot = playershoot - 1;
 		c.beginPath();
-		c.moveTo(playerx+10,canvas.height-10);
-		c.lineTo(playerx,0);
+		c.moveTo(playerx+30,canvas.height-10);
+		c.lineTo(playerx+30,0);
 		c.stroke();
 	}
 	document.addEventListener('keydown', function(event){
 		var key_press = String.fromCharCode(event.keyCode);
 		keyboardinput = event.keyCode;
-	})
+	});
 	//37 is left and 39 is righ
 	if(keyboardinput == 37 && playerx>0 ){
-		playerx = playerx -10;
+		playerVel = -1;
 	}
 	else if(keyboardinput == 39 && playerx<canvas.width-10){
-		playerx = playerx + 10;
+		playerVel = 1;
 	}
 	else if (keyboardinput == 32 && endtime - starttime > 100 && playerfire == true){
 		starttime = 0;
@@ -104,6 +108,16 @@ function animate(){
 		playershoot = 10;
 	}
 	keyboardinput = 0;
+
+	document.addEventListener('keyup', function(event){
+		var key_press = String.fromCharCode(event.keyCode);
+		if(keyboardinput == 37){
+			playerVel = 0
+		}
+		else if(keyboardinput == 39){
+			playerVel = 0;
+		}
+	});
 
 	if(Math.random()>0.99 && delay > 200 ){
 		chosen = Math.floor(Math.random()*5);
@@ -121,7 +135,7 @@ function animate(){
 		}
 	}
 	for(var i =0 ; i < heights.length; i++){
-		c.drawImage(virusImg, pos[i]-10,heights[i]-10,30,30);
+		c.drawImage(virusImg, pos[i]-10,heights[i]-10,60,60);
 		if(pos[i] > canvas.width-10){
 			vel[i] = -vel[i];
 		}
