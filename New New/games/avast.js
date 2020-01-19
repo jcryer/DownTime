@@ -1,9 +1,10 @@
 $(document).ready(function() {
 
     var canvas = document.getElementById("canvas");
-    window.addEventListener( "keydown", this.keyDown, true);
+    window.addEventListener( "keydown", keyDown, true);
     var ctx = canvas.getContext("2d");
 	var virusImage = new Image();
+    var tick = 0;
     virusImage.src = "virus.png";
     
     var avastImage = new Image();
@@ -18,9 +19,47 @@ $(document).ready(function() {
         
         // 0: up 1: right 2: down 3: left
         checkMove(dir) {
+            if (dir == 0) {
+                if (map[this.x][this.y-1] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 1) {
+                if (map[this.x+1][this.y] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 2) {
+                if (map[this.x][this.y+1] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 3) {
+                if (map[this.x-1][this.y] == 0) {
+                    return true;
+                }
+            }
+            return false;
         }
+        
+        move (dir) {
+            if (dir == 0) {
+                this.y -=1;
+            }
+            if (dir == 1) {
+                this.x += 1;
+                
+            }
+            if (dir == 2) {
+                this.y += 1;
+            }
+            if (dir == 3) {
+                this.x -=1;
+            }
+        }
+        
         draw() {
-           ctx.drawImage(virusImage, this.x, this.y, 51,48);
+           ctx.drawImage(virusImage, this.x*50+100, this.y*50+200, 51,48);
         }
     }
     
@@ -30,11 +69,47 @@ $(document).ready(function() {
            this.y = y;
         }
         
-        // 0: up 1: right 2: down 3: left
+        move (dir) {
+            if (dir == 0) {
+                this.y -=1;
+            }
+            if (dir == 1) {
+                this.x += 1;
+                
+            }
+            if (dir == 2) {
+                this.y += 1;
+            }
+            if (dir == 3) {
+                this.x -=1;
+            }
+        }
+        
         checkMove(dir) {
+            if (dir == 0) {
+                if (map[this.x][this.y-1] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 1) {
+                if (map[this.x+1][this.y] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 2) {
+                if (map[this.x][this.y+1] == 0) {
+                    return true;
+                }
+            }
+            if (dir == 3) {
+                if (map[this.x-1][this.y] == 0) {
+                    return true;
+                }
+            }
+            return false;
         }
         draw() {
-           ctx.drawImage(avastImage, this.x, this.y, 51,48);
+           ctx.drawImage(avastImage, this.x*50+100, this.y*50+200, 51,48);
         }
     }
 
@@ -51,28 +126,35 @@ $(document).ready(function() {
                 [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             ];
-    var v = new Virus(150, 250);
-    v.draw();
-        var v2 = new Virus(200, 250);
-    v2.draw();
     
-    var a1 = new Avast(400, 250);
+    var v = new Virus(1, 1);
+    v.draw();
+    
+    var a1 = new Avast(9, 1);
     a1.draw();
     
     function fillRect(x,y){
         ctx.fillStyle = "#666666";
         ctx.fillRect(x,y,50,50);
     }
-    
     gameLoop();
     function gameLoop() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawMap();
+        tick += 1;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawMap();
+        if (a1.x == v.x && a1.y == v.y) {
+            v = null;
+        }
         a1.draw();
+        
+        if (tick % 10 == 0) {
+            var x = getRandomInt(0, 3);
+            if (v.checkMove(x)) {
+                v.move(x);
+            }
+        }
         v.draw();
-        v2.draw();
-		        requestAnimationFrame(gameLoop);
+		requestAnimationFrame(gameLoop);
         
     }
     function drawMap() {
@@ -84,5 +166,34 @@ $(document).ready(function() {
             }
         }       
     }
+    
+    function keyDown(e) {
+        console.log("hello");
+			if(e.keyCode == 37){
+				if (a1.checkMove(3)) {
+                    a1.move(3);
+                }
+                
+			}else if(e.keyCode == 39){
+			 if (a1.checkMove(1)) {
+                    a1.move(1);
+                }
+			}else if(e.keyCode == 38){
+			 if (a1.checkMove(0)) {
+                    a1.move(0);
+                }
+			}else if(e.keyCode == 40){
+			 if (a1.checkMove(2)) {
+                    a1.move(2);
+                }
+			}
+		}
+    
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
 
 });
